@@ -83,7 +83,7 @@
       display: none;
     }
 
-    /* Photo Bands */
+    /* Photo Bands - Updated for vertical layout */
     .photo-band {
       position: absolute;
       display: flex;
@@ -93,28 +93,29 @@
 
     .band1 {
       top: 5%;
-      animation: scrollRight 150s linear infinite;
+      animation: scrollRight 120s linear infinite;
     }
 
     .band2 {
-      top: 37%;
-      animation: scrollLeft 180s linear infinite;
+      top: 35%;
+      animation: scrollLeft 150s linear infinite;
     }
 
     .band3 {
-      top: 70%;
-      animation: scrollRight 200s linear infinite;
+      top: 65%;
+      animation: scrollRight 180s linear infinite;
     }
 
     .photo-band img {
-  height: auto;
-  max-height: 180px; /* Changed from 120px */
-  width: 150px; /* Changed from 100px */
-  margin: 0 10px; /* Slightly increased margin */
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
+      height: auto;
+      max-height: 180px;
+      width: 150px;
+      margin: 0 15px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+      object-fit: cover;
+    }
 
     .photo-band img:hover {
       transform: scale(1.05);
@@ -123,7 +124,7 @@
     /* Buttons */
     .action-buttons {
       position: absolute;
-      bottom: 50px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -135,12 +136,12 @@
     }
 
     .btn {
-      padding: 12px 24px;
+      padding: 15px 25px;
       background: #f5f5dc;
       color: #800020;
       border: none;
       border-radius: 30px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -149,10 +150,10 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      min-width: 120px;
-      min-height: 50px;
+      min-width: 150px;
+      min-height: 60px;
       width: 100%;
-      max-width: 300px;
+      max-width: 350px;
     }
 
     .btn:hover {
@@ -178,7 +179,7 @@
 
     .login-form {
       background: rgba(236, 236, 236, 0.9);
-      padding: 20px;
+      padding: 25px;
       border-radius: 20px;
       width: 95%;
       max-width: 400px;
@@ -195,11 +196,12 @@
       margin-bottom: 8px;
       color: #800020;
       font-weight: bold;
+      font-size: 1.1rem;
     }
 
     .form-group input {
       width: 100%;
-      padding: 12px 15px;
+      padding: 15px;
       border: 2px solid #800020;
       border-radius: 10px;
       font-size: 16px;
@@ -257,7 +259,7 @@
 
     .captcha-box {
       background: rgba(245, 245, 220, 0.9);
-      padding: 20px;
+      padding: 25px;
       border-radius: 20px;
       width: 95%;
       max-width: 500px;
@@ -274,7 +276,7 @@
     }
 
     .captcha-question {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: #800020;
       margin: 15px 0;
       font-weight: bold;
@@ -284,21 +286,21 @@
     .captcha-options {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       margin: 20px 0;
     }
 
     .captcha-btn {
-      padding: 12px 20px;
+      padding: 15px 20px;
       background: rgba(255, 255, 255, 0.8);
       color: #800020;
       border: 2px solid #800020;
       border-radius: 15px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       cursor: pointer;
       transition: all 0.3s ease;
       animation: fadeIn 0.5s ease-out;
-      min-height: 44px;
+      min-height: 50px;
     }
 
     .captcha-btn:hover {
@@ -308,14 +310,14 @@
 
     .captcha-hint {
       color: #ff3333;
-      font-size: 0.9rem;
+      font-size: 1rem;
       margin-top: 10px;
       min-height: 20px;
     }
 
     .suspense-text {
       color: #800020;
-      font-size: 1rem;
+      font-size: 1.1rem;
       margin: 10px 0;
       line-height: 1.6;
       font-style: italic;
@@ -439,41 +441,50 @@
       100% { transform: scale(1); }
     }
 
-    /* Mobile-specific adjustments */
-    @media (max-width: 768px) {
-  .photo-band img {
-    max-height: 120px; /* Changed from 80px */
-    width: 100px; /* Changed from 70px */
-  }
-}
+    /* Portrait-specific adjustments */
+    @media (orientation: portrait) {
+      .photo-band img {
+        max-height: 160px;
+        width: 140px;
+        margin: 0 10px;
+      }
 
-      .band1 { top: 3%; }
-      .band2 { top: 40%; } /* Adjusted from 37% */
-      .band3 { top: 77%; }
+      .band1 { top: 5%; }
+      .band2 { top: 38%; }
+      .band3 { top: 70%; }
 
       .btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 15px 20px;
+        font-size: 1rem;
+        min-height: 55px;
       }
 
       .login-form {
-        padding: 15px;
+        padding: 20px;
       }
 
-      .captcha-title {
-        font-size: 1.3rem;
-      }
-
-      .captcha-question {
-        font-size: 1rem;
+      .form-group input {
+        padding: 12px 15px;
       }
 
       #loveVideo {
         max-height: 50vh;
       }
+    }
 
-      .mobile-play-prompt {
-        display: block;
+    /* Landscape-specific adjustments (just in case) */
+    @media (orientation: landscape) {
+      .photo-band img {
+        max-height: 120px;
+        width: 110px;
+      }
+
+      .band1 { top: 10%; }
+      .band2 { top: 45%; }
+      .band3 { top: 80%; }
+
+      .action-buttons {
+        bottom: 20px;
       }
     }
   </style>
@@ -643,13 +654,13 @@
       {
         question: "Verify you are FIZA",
         subquestion: "1. What is my favorite color?",
-        options: ["Royale bleu", "Green", "White"],
+        options: ["Royale bleu", "Dark Green", "White"],
         answer: "Royale bleu"
       },
       {
         subquestion: "2. What is the nickname that makes me feel shy?",
-        options: ["Chbeyb ta3i", "Fisofi", "Sevgilim"],
-        answer: "Chbeyb ta3i"
+        options: ["Chbeyb", "Fisofi", "Sevgilim"],
+        answer: "Chbeyb"
       },
       {
         subquestion: "3. Do you love me?",
