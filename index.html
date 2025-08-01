@@ -107,14 +107,14 @@
     }
 
     .photo-band img {
-      height: auto;
-      max-height: 120px;
-      width: 100px;
-      margin: 0 8px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
-    }
+  height: auto;
+  max-height: 180px; /* Changed from 120px */
+  width: 150px; /* Changed from 100px */
+  margin: 0 10px; /* Slightly increased margin */
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
 
     .photo-band img:hover {
       transform: scale(1.05);
@@ -379,6 +379,17 @@
       background: #ff3333;
     }
 
+    /* Mobile Play Button */
+    .mobile-play-prompt {
+      position: absolute;
+      bottom: 20%;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 4;
+      display: none;
+    }
+
     /* Animations */
     @keyframes fadeOut {
       to { opacity: 0; visibility: hidden; }
@@ -429,15 +440,16 @@
     }
 
     /* Mobile-specific adjustments */
-    @media (max-width: 480px) {
-      .photo-band img {
-        max-height: 80px;
-        width: 70px;
-      }
+    @media (max-width: 768px) {
+  .photo-band img {
+    max-height: 120px; /* Changed from 80px */
+    width: 100px; /* Changed from 70px */
+  }
+}
 
       .band1 { top: 3%; }
-      .band2 { top: 35%; }
-      .band3 { top: 67%; }
+      .band2 { top: 40%; } /* Adjusted from 37% */
+      .band3 { top: 77%; }
 
       .btn {
         padding: 10px 20px;
@@ -454,6 +466,14 @@
 
       .captcha-question {
         font-size: 1rem;
+      }
+
+      #loveVideo {
+        max-height: 50vh;
+      }
+
+      .mobile-play-prompt {
+        display: block;
       }
     }
   </style>
@@ -513,10 +533,16 @@
   <!-- Video Message -->
   <div id="videoMessage" class="video-container" style="display:none;">
     <div class="video-overlay"></div>
-    <video id="loveVideo" controls autoplay playsinline muted>
+    <video id="loveVideo" controls playsinline webkit-playsinline muted preload="auto">
+      <source src="images/Snapchat-483252254.mp4" type="video/mp4">
       <source src="images/Snapchat-483252254.webm" type="video/webm">
-      Your browser does not support the video tag.
+      Your device doesn't support romantic videos 💔
     </video>
+    <div class="mobile-play-prompt" id="mobilePrompt">
+      <button class="btn" onclick="playVideo()">
+        <span>▶️</span> Play Our Special Video
+      </button>
+    </div>
     <button class="close-video-btn" onclick="closeVideo()">✕</button>
   </div>
 
@@ -564,11 +590,6 @@
           document.body.style.zoom = "100%";
         });
       });
-
-      // Handle video autoplay on mobile
-      const video = document.getElementById('loveVideo');
-      video.setAttribute('playsinline', '');
-      video.setAttribute('muted', '');
     }
 
     // Show welcome screen then main content
@@ -773,65 +794,38 @@
 
     function showFinalSurprise() {
       document.getElementById('captchaScreen').style.display = 'none';
+      document.getElementById('videoMessage').style.display = 'flex';
       
-      const captchaBox = document.getElementById('captchaBox');
-      captchaBox.innerHTML = `
-        <div style="text-align:center; animation:fadeIn 1s ease-out;">
-          <div style="font-size:5rem; animation:heartPulse 1.5s infinite;">💖</div>
-          <div class="captcha-question" style="color:#800020; font-size:1.5rem;">
-            This is for you, my love...
-          </div>
-        </div>
-      `;
+      const video = document.getElementById('loveVideo');
+      const prompt = document.getElementById('mobilePrompt');
       
-      setTimeout(() => {
-        document.getElementById('videoMessage').style.display = 'flex';
-        const video = document.getElementById('loveVideo');
-        video.play().catch(e => {
-          console.log("Autoplay prevented:", e);
-          // Add play button if autoplay fails
-          const playBtn = document.createElement('button');
-          playBtn.className = 'btn';
-          playBtn.innerHTML = '<span>▶️</span> Play Video';
-          playBtn.style.position = 'absolute';
-          playBtn.style.bottom = '20px';
-          playBtn.style.left = '50%';
-          playBtn.style.transform = 'translateX(-50%)';
-          playBtn.style.zIndex = '3';
-          playBtn.onclick = function() {
-            video.play();
-            this.remove();
-          };
-          document.getElementById('videoMessage').appendChild(playBtn);
+      // Reset video state
+      video.currentTime = 0;
+      video.load();
+      
+      // Try autoplay (will fail on most mobile browsers)
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay failed - show play button
+          prompt.style.display = 'block';
         });
-        
-        video.onended = function() {
-          const replayBtn = document.createElement('button');
-          replayBtn.className = 'btn';
-          replayBtn.innerHTML = '<span>🔁</span> Watch Again';
-          replayBtn.style.position = 'absolute';
-          replayBtn.style.bottom = '20px';
-          replayBtn.style.left = '50%';
-          replayBtn.style.transform = 'translateX(-50%)';
-          replayBtn.style.zIndex = '3';
-          replayBtn.onclick = function() {
-            video.currentTime = 0;
-            video.play();
-            this.remove();
-          };
-          document.getElementById('videoMessage').appendChild(replayBtn);
-        };
-      }, 3000);
+      }
+    }
+    
+    function playVideo() {
+      const video = document.getElementById('loveVideo');
+      video.play();
+      document.getElementById('mobilePrompt').style.display = 'none';
     }
   
     function closeVideo() {
-      document.getElementById('videoMessage').style.display = 'none';
       const video = document.getElementById('loveVideo');
       video.pause();
       video.currentTime = 0;
-      // Remove any existing buttons
-      const buttons = document.querySelectorAll('#videoMessage button:not(.close-video-btn)');
-      buttons.forEach(btn => btn.remove());
+      document.getElementById('videoMessage').style.display = 'none';
+      document.getElementById('mobilePrompt').style.display = 'block';
     }
 
     // Close login when clicking outside form
